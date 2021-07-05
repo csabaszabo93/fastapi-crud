@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: fastapi
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: fastapi-crud
+  
+  fastapi-crud:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on: 
+      - db
+    environment:
+      DATABASE_URL: postgresql://fastapi:postgres@db/fastapi-crud
+    image: fastapi-crud
+    ports:
+      - 8080:8080
+    volumes:
+      - ./app/:/app/
